@@ -1,0 +1,20 @@
+{
+  "name": "formily-vue",
+  "version": "0.1.0",
+  "description": "Vue 3 composables for formily-core",
+  "type": "module",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/leonwgc/formily.git", "directory": "packages/vue" },
+  "files": ["dist", "README.md"],
+  "sideEffects": false,
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": { "formily-core": "workspace:^" },
+  "peerDependencies": { "vue": ">=3.3.0" },
+  "devDependencies": { "vue": "^3.5.0", "typescript": "^5.8.0" }
+}

@@ -1,0 +1,9 @@
+node_modules/
+packages/*/dist/
+demo/dist/
+.packs/
+.pnpm-store/
+coverage/
+test-results/
+playwright-report/
+.DS_Store

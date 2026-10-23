@@ -1,0 +1,20 @@
+{
+  "name": "formily-react",
+  "version": "0.1.0",
+  "description": "React hooks for formily-core",
+  "type": "module",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/leonwgc/formily.git", "directory": "packages/react" },
+  "files": ["dist", "README.md"],
+  "sideEffects": false,
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": { "formily-core": "workspace:^" },
+  "peerDependencies": { "react": ">=18.0.0" },
+  "devDependencies": { "react": "^19.0.0", "react-dom": "^19.0.0", "@types/react": "^19.0.0", "typescript": "^5.8.0" }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "formily-workspace",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter formily-core build && pnpm --filter formily-react build && pnpm --filter formily-vue build",
+    "build:docs": "pnpm build && pnpm --filter formily-demo build",
+    "typecheck": "pnpm build && pnpm -r --filter '!formily-demo' typecheck && pnpm --filter formily-demo typecheck && tsc -p tsconfig.api.json",
+    "test": "pnpm build && vitest run",
+    "test:e2e": "pnpm build:docs && playwright test",
+    "test:watch": "vitest",
+    "dev": "pnpm build && pnpm --filter formily-demo dev",
+    "pack:check": "pnpm build && pnpm --filter formily-core pack --pack-destination .packs && pnpm --filter formily-react pack --pack-destination .packs && pnpm --filter formily-vue pack --pack-destination .packs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@playwright/test": "^1.58.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "jsdom": "^26.0.0",
+    "typescript": "^5.8.0",
+    "vite": "^7.0.0",
+    "vitest": "^3.0.0"
+  }
+}
