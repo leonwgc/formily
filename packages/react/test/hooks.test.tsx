@@ -2,7 +2,7 @@ import { act, StrictMode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it } from 'vitest'
 import { createForm } from 'formily-core'
-import { useField, useFieldArray, useFormState } from '../src/index.js'
+import { useField, useFieldArray, useFormState, useTextField } from '../src/index.js'
 
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
@@ -24,6 +24,28 @@ function mount(element: React.ReactNode) {
 }
 
 describe('React adapter', () => {
+  it('binds text inputs without manual change handlers', async () => {
+    const form = createForm({ initialValues: { name: '' } })
+    function App() {
+      const name = useTextField(form, 'name', { validate: (value) => value ? undefined : 'Required' })
+      return <><input aria-label="Name" {...name.inputProps} />
+        <span data-testid="error">{name.error}</span></>
+    }
+    const container = mount(<App />)
+    const input = container.querySelector('input')!
+    expect(input.name).toBe('name')
+    await act(async () => { input.dispatchEvent(new FocusEvent('focusout', { bubbles: true })); await Promise.resolve() })
+    expect(container.querySelector('[data-testid=error]')?.textContent).toBe('Required')
+    await act(async () => {
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, 'Ada')
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+      await Promise.resolve()
+    })
+    expect(form.getValue('name')).toBe('Ada')
+    expect(input.value).toBe('Ada')
+    expect(container.querySelector('[data-testid=error]')?.textContent).toBe('')
+  })
+
   it('updates field and form subscriptions through React hooks', async () => {
     const form = createForm({ initialValues: { name: '' } })
     function App() {

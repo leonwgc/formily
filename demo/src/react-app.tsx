@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useField, useFieldArray, useForm, useFormState } from 'formily-react'
+import { useFieldArray, useForm, useFormState, useTextField } from 'formily-react'
 import type { FieldOptions, Form } from 'formily-core'
 import { email, formOptions, required, username, type DemoValues } from './shared.js'
 import reactAppSource from './react-app.tsx?raw'
@@ -47,27 +47,27 @@ function TextField({ form, path, label, validate, hint }: {
   validate: NonNullable<FieldOptions<DemoValues>['validate']>
   hint?: string
 }) {
-  const field = useField<DemoValues, string>(form, path, { validate })
+  const field = useTextField(form, path, { validate })
   const id = `react-${path.replace(/[^a-z\d]/gi, '-')}`
   return <div className="field">
     <label htmlFor={id}>{label}</label>
-    <input id={id} name={path} value={field.value ?? ''}
+    <input id={id} {...field.inputProps}
       aria-invalid={!!field.error} aria-describedby={field.error ? `${id}-error` : hint ? `${id}-hint` : undefined}
-      onChange={(event) => field.onChange(event.target.value)} onBlur={field.onBlur} />
+    />
     {field.error && <small className="error" id={`${id}-error`} role="alert">{field.error}</small>}
     {!field.error && hint && <small className="hint" id={`${id}-hint`}>{hint}</small>}
   </div>
 }
 
 function ItemField({ form, index, onRemove }: { form: Form<DemoValues>; index: number; onRemove: () => void }) {
-  const field = useField<DemoValues, string>(form, `items.${index}.label`, { validate: required })
+  const field = useTextField(form, `items.${index}.label`, { validate: required })
   const id = `react-item-${index}`
   return <div className="array-row">
     <div className="field">
       <label htmlFor={id}>Item {index + 1}</label>
-      <input id={id} value={field.value ?? ''} aria-invalid={!!field.error}
+      <input id={id} {...field.inputProps} aria-invalid={!!field.error}
         aria-describedby={field.error ? `${id}-error` : undefined}
-        onChange={(event) => field.onChange(event.target.value)} onBlur={field.onBlur} />
+      />
       {field.error && <small className="error" id={`${id}-error`} role="alert">{field.error}</small>}
     </div>
     <button className="icon-button" type="button" aria-label={`Remove item ${index + 1}`} onClick={onRemove}>×</button>

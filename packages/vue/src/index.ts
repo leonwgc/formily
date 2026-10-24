@@ -40,6 +40,21 @@ export function useField<TValues extends object, TValue = unknown>(
   }
 }
 
+export function useTextField<TValues extends object>(
+  form: Form<TValues>,
+  path: MaybeRefOrGetter<string>,
+  options: FieldOptions<TValues> = {},
+) {
+  const field = useField<TValues, string>(form, path, options)
+  return {
+    ...field,
+    model: computed({
+      get: () => field.value.value ?? '',
+      set: field.setValue,
+    }),
+  }
+}
+
 export function useFieldArray<TValues extends object, TValue = unknown>(form: Form<TValues>, path: string) {
   const state = useFormState(form)
   return {
